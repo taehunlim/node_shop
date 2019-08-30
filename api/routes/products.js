@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
+const productModel = require('../models/product');
 
 
 router.get('/', (req, res) => {
@@ -12,20 +14,27 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    const product = {
+    const product = new productModel({
         name: req.body.name,
         price: req.body.price
-    };
-
-    res.json({
-        message: "created Product",
-        productInfo: product
     });
 
+    product
+        .save()
+        .then(result =>{
+            res.json({
+                msg: "successful Product",
+                createdProduct: result
+            });
+        })
+        .catch(err =>{
+            res.json({
+                errInfo: err
+            });
+        });
 
-    // res.json({
-    //     message : "productPost"
-    // });
+
+
 });
 
 router.patch('/', (req, res) => {
