@@ -9,9 +9,21 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+ 
+    const order = {
+        productId: req.body.productId,
+        quentity: req.body.quentity
+    };
+ 
     res.json({
-        message : "orderPost"
+        message: "created Order",
+        orderInfo: order
     });
+ 
+ 
+    // res.json({
+    //     message : "orderPost"
+    // });
 });
 
 router.patch('/', (req, res) => {

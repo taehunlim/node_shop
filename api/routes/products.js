@@ -11,9 +11,21 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
+
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    };
+
     res.json({
-        message : "productPost"
+        message: "created Product",
+        productInfo: product
     });
+
+
+    // res.json({
+    //     message : "productPost"
+    // });
 });
 
 router.patch('/', (req, res) => {
