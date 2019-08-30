@@ -2,6 +2,7 @@
 const http = require('http');
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
@@ -9,7 +10,7 @@ const userRoutes = require('./api/routes/user');
 
 
 
-
+app.use(morgan('dev'));
 app.use('/product', productRoutes);
 app.use('/order', orderRoutes);
 app.use('/user', userRoutes);
