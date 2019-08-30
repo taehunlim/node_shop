@@ -6,9 +6,22 @@ const productModel = require('../models/product');
 
 
 router.get('/', (req, res) => {
-    res.json({
-        message : "productGet"
-    });
+
+    productModel
+        .find()
+        .exec()
+        .then(docs => {
+            res.json({
+                msg: "successful Products Get",
+                products: docs
+            });
+        })
+        .catch(err =>{
+            res.json({
+                errInfo: err
+            });
+        });
+
 });
 
 
