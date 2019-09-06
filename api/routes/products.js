@@ -11,11 +11,26 @@ router.get('/', (req, res) => {
         .find()
         .exec()
         .then(docs => {
-            res.json({
-                msg: "successful Products Get",
+            const response = {
                 count : docs.length,
-                products: docs
-            });
+                products : docs.map(doc => {
+                    return{
+                        name: doc.name,
+                        price: doc.price,
+                        id: doc._id,
+                        request:{
+                            type: "GET",
+                            url: "http://localhost:3000/product/" + doc._id
+                        }
+                    };
+                })
+            };
+            res.status(200).json(response);
+            // res.json({
+            //     msg: "successful Products Get",
+            //     count : docs.length,
+            //     products: docs
+            // });
         })
         .catch(err =>{
             res.json({
@@ -38,7 +53,11 @@ router.post('/', (req, res) => {
         .then(result =>{
             res.json({
                 msg: "successful Product",
-                createdProduct: result
+                createdProduct: result,
+                request: {
+                    type : "GET",
+                    url : "http://localhost:3000/product/" + result._id
+                }
             });
         })
         .catch(err =>{
@@ -62,7 +81,13 @@ router.patch('/:productId', (req, res) => {
         .update({_id : id}, { $set: updateOps})
         .exec()
         .then(result => {
-            res.status(200).json(result);
+            res.status(200).json({
+                productInfo : result,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:3000/product/" + id
+                }
+            });
         })
         .catch(err => {
             res.json({
@@ -87,10 +112,13 @@ router.get('/:productId', (req, res) => {
                    msg : "no productId"
                 });
             } else {
-                res.json({
-                    msg: "succesful detail product",
-                    productInfo: result
-                });
+                return res.status(200).json({
+                  product: result,
+                  request :{
+                      type : "GET",
+                      url :"http://localhost:3000/product"
+                  }
+                })
             }
         })
         .catch(err =>{
@@ -111,7 +139,10 @@ router.delete('/:productId', (req, res) => {
         .then(result =>{
           res.json({
              msg : "deletedProduct",
-             productList : result
+             request :{
+                 type : "GET",
+                 url : "http://localhost:3000/product"
+             }
           });
         })
         .catch(err =>{
