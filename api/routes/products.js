@@ -52,13 +52,29 @@ router.post('/', (req, res) => {
 });
 
 //수정하기
-router.patch('/', (req, res) => {
-    res.json({
-        message : "productModefie"
-    });
+router.patch('/:productId', (req, res) => {
+    const id = req.params.productId;
+    const updateOps = {};
+    for(const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    productModel
+        .update({_id : id}, { $set: updateOps})
+        .exec()
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            res.json({
+                errInfo : err
+            });
+        });
 });
 
-
+//$ = 다시 셋팅 한다는in mongo db
+//[] = ㅂㅐ열
+// {} = json
+// product detail get
 router.get('/:productId', (req, res) => {
     const id = req.params.productId;
 
