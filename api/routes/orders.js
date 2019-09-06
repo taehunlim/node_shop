@@ -87,12 +87,51 @@ router.post('/', (req, res) => {
         });
 });
 
+
+
+router.get('/:orderId', (req, res) => {
+   const id = req.params.orderId;
+
+   orderModel
+       .findById(id)
+       .then(order => {
+           if(!order) {
+               return res.json({
+                   msg : "order Id not found"
+               });
+           }
+           res.status(200).json({
+              orderInfo : order,
+              request : {
+                  type : "GET",
+                  url : "http://localhost:3000/order"
+              }
+           });
+       })
+       .catch(err => {
+           res.status(500).json({
+               errInfo : err
+           })
+       });
+
+
+
+});
+
+
+
+//수정(숙제)
 router.patch('/', (req, res) => {
     res.json({
         message : "orderModefie"
     });
 });
 
+
+
+
+
+//삭제(숙제)
 router.delete('/', (req, res) => {
     res.json({
         message : "orderDelite"
