@@ -10,7 +10,7 @@ const userModel = require('../models/user');
 
 
 
-
+// user 회원가입
 router.post('/signup', (req, res) => {
 
     // 회원정보 검색
@@ -67,10 +67,46 @@ router.post('/signup', (req, res) => {
               errInfo : err
            });
         });
+});
 
 
 
+//user 로그인
+router.post('/login', (req, res) => {
 
+    //email 등록여부 확인
+    //Password 맞는지 확인
+
+
+    userModel
+        .find({email : req.body.email})
+        .then(user => {
+            if(user.length < 1) {
+                return res.status(400).json ({
+                   msg : "등록되지 않은 email 입니다"
+                });
+            }
+            else{
+                //bcrypt.compare(사용자 입력값, 기존 등록된 정보, (err, result))
+                bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+                    if(err){
+                        return res.status(400).json({
+                            errInfo : "패스워드가 틀림"
+                        });
+                    }
+                    else{
+                        res.status(200).json({
+                           msg : "successful login"
+                        });
+                    }
+                });
+            }
+        })
+        .catch(err => {
+           res.status(500).json({
+               errInfo : err
+           });
+        });
 });
 
 
