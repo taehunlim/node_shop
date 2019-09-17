@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
+
 
 const productModel = require('../models/product');
 
@@ -41,7 +43,7 @@ router.get('/', (req, res) => {
 });
 
 // product 등록하기
-router.post('/', (req, res) => {
+router.post('/',checkAuth, (req, res) => {
 
     const product = new productModel({
         name: req.body.name,
@@ -71,7 +73,7 @@ router.post('/', (req, res) => {
 });
 
 //수정하기
-router.patch('/:productId', (req, res) => {
+router.patch('/:productId', checkAuth, (req, res) => {
     const id = req.params.productId;
     const updateOps = {};
     for(const ops of req.body) {
@@ -130,7 +132,7 @@ router.get('/:productId', (req, res) => {
 
 
 //삭제하기
-router.delete('/:productId', (req, res) => {
+router.delete('/:productId', checkAuth, (req, res) => {
     const id = req.params.productId;
 
     productModel

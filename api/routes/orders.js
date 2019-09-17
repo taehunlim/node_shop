@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const orderModel = require('../models/order');
 const productModel = require('../models/product');
 
-
+const checkAuth = require('../middleware/check-auth');
 
 
 
@@ -14,7 +14,7 @@ const productModel = require('../models/product');
 //장바구니 전체
 
 // 왜 product/doc.product가 아닌 doc. id인지
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
     orderModel
         .find()
         .exec()
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
 // 장바구니 등록
 //else를 사용할순 없는지 then then 대신
 //주소는 그냥 order링크만 하는게 아닌
-router.post('/', (req, res) => {
+router.post('/', checkAuth, (req, res) => {
 
     productModel
         .findById(req.body.productId)
@@ -89,7 +89,7 @@ router.post('/', (req, res) => {
 
 
 //detail
-router.get('/:orderId', (req, res) => {
+router.get('/:orderId', checkAuth, (req, res) => {
    const id = req.params.orderId;
 
    orderModel
@@ -121,7 +121,7 @@ router.get('/:orderId', (req, res) => {
 
 
 
-router.patch('/:orderId', (req, res) => {
+router.patch('/:orderId', checkAuth, (req, res) => {
     const id = req.params.orderId;
     const updateOps = {};
     for(const ops of req.body) {
@@ -151,7 +151,7 @@ router.patch('/:orderId', (req, res) => {
 
 
 //삭제(숙제)
-router.delete('/:orderId', (req, res) => {
+router.delete('/:orderId', checkAuth, (req, res) => {
 
     const id = req.params.orderId;
 

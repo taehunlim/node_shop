@@ -111,7 +111,7 @@ router.post('/login', (req, res) => {
                         );
                         res.status(200).json({
                            msg : "successful login",
-                            token : token
+                            token : "bearer " + token
                         });
                     }
                 });
