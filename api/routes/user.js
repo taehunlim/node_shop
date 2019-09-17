@@ -122,8 +122,30 @@ router.post('/login', (req, res) => {
 });
 
 
+//회원탈퇴
+router.delete('/:userId', (req, res) => {
+    const id = req.params.userId;
 
-
+    userModel
+        .remove({_id : id})
+        .then(user => {
+            if(!user) {
+                return res.status(400).json({
+                    msg : "등록되어있지 않은 ID 입니다."
+                });
+            }
+            else{
+              res.status(200).json({
+                  msg : "successful deleted ID"
+              });
+            }
+        })
+        .catch(err => {
+           res.status(500).json({
+              errInfo : err
+           });
+        });
+});
 
 
 
