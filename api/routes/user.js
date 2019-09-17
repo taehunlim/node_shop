@@ -10,6 +10,9 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/user');
 
 
+//전체 user 데이터 불러오기
+//user detail 불러오기
+//숙제
 
 
 // user 회원가입
