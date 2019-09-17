@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 //mongoose : save, find, update 등등
 const bcrypt = require('bcryptjs');
 // 자동 암호화 시켜줌
+const jwt = require('jsonwebtoken');
+//토큰(인증코드)을 발행 해줌
 
 const userModel = require('../models/user');
 
@@ -76,6 +78,8 @@ router.post('/login', (req, res) => {
 
     //email 등록여부 확인
     //Password 맞는지 확인
+    //jsonwebtoken 생성
+    //화면에 뿌려줌
 
 
     userModel
@@ -95,8 +99,16 @@ router.post('/login', (req, res) => {
                         });
                     }
                     else{
+                        const token = jwt.sign({
+                            email : user[0].email,
+                            userId : user[0]._id
+                            },
+                            "secret", {expiresIn : "1h"}
+                        //암구호,{유효기간}
+                        );
                         res.status(200).json({
-                           msg : "successful login"
+                           msg : "successful login",
+                            token : token
                         });
                     }
                 });

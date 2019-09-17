@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 const db = "mongodb+srv://limtae:asd123@cluster0-nyf5t.mongodb.net/test?retryWrites=true&w=majority";
 
-mongoose.connect(db, { useNewUrlParser: true})
+mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true})
     .then(() => console.log("MongoDB Connected ..."))
     .catch(err => console.log(err));
 
